@@ -1,0 +1,37 @@
+pipeline {
+    agent any
+    parameters{
+        string(name: 'appVersion', defaultValue: '1.0.0', description: 'What is the application version ?')
+    }
+    stages{
+        stage('appVersion'){
+            steps{
+                sh 'echo "application version ${param.appVersion}"'
+            }
+        }
+        stage('init'){
+            steps{
+                sh """
+                    cd terraform
+                    terraform init
+                """
+            }
+        }
+        stage('plan'){
+            steps{
+                sh """
+                    cd terraform
+                    terraform plan -var="appVersion=${param.appVersion}"
+                """
+            }
+        }
+        stage('apply/deploy'){
+            steps{
+                sh """
+                    cd terraform
+                    terraform apply -auto-approve -var="appVersion=${param.appVersion}"
+                """
+            }
+        }
+    }
+}
