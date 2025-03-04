@@ -18,3 +18,6 @@ variable "common_tags" {
 variable "zone_name" {
   default = "hellandhaven.xyz"
 }
+variable "appVersion" {
+  default = "" # created as part of CICD
+}
